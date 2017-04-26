@@ -6,17 +6,27 @@ using System.Windows.Forms;
 
 namespace Assignment05
 {
-    static class Program
+    class Program : Engine
     {
+
+        public Program() : base()
+        {
+
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
+            Program.canvas.add(new Elephant(0, 0));
+            Application.Run(new Program());
+            /*Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Program program = new Program();
+            program.Canvas.add(new Elephant(0, 0));
+            Application.Run(new Program());*/
         }
     }
 }

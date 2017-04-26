@@ -5,16 +5,20 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Assignment05
 {
-    public partial class Form1 : Form
+    class Elephant:PhysicsSprite
     {
-        public Form1()
+        public Elephant(int x, int y) : base(Properties.Resources.elephant, x, y)
         {
-            InitializeComponent();
+            image = Properties.Resources.elephant;
+            X = x;
+            Y = y;
         }
     }
 }
