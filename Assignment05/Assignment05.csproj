@@ -57,6 +57,7 @@
     <Compile Include="Engine.Designer.cs">
       <DependentUpon>Engine.cs</DependentUpon>
     </Compile>
+    <Compile Include="FriendlyBullet.cs" />
     <Compile Include="ImageSprite.cs" />
     <Compile Include="PhysicsSprite.cs" />
     <Compile Include="Program.cs">

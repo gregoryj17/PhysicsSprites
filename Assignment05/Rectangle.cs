@@ -18,6 +18,9 @@ namespace Assignment05
         public int width;
         public Boolean visible;
         public int opacity;
+        public Color color = Color.FromArgb(200, Color.LawnGreen);
+        public static Color initColor = Color.FromArgb(200, Color.LawnGreen);
+        
 
         public Rectangle(int x, int y, int width, int height, int opacity)
         {
@@ -45,10 +48,15 @@ namespace Assignment05
             this.visible = visible;
         }
 
+        public void setColor(Color color)
+        {
+            this.color = color;
+        }
+
         public override void paint(Graphics g)
         {
             base.paint(g);
-            if (visible) g.FillRectangle(new SolidBrush(Color.FromArgb(opacity, Color.LawnGreen)), X, Y, width, height);
+            if (visible) g.FillRectangle(new SolidBrush(color), X, Y, width, height);
         }
     }
 }

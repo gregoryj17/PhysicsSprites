@@ -27,7 +27,6 @@ namespace Assignment05
 
         public void Shoot()
         {
-
             Bullet bullet = new Bullet((int)(X + 2 * width * Scale * 1.1f), (int)(Y + height * Scale / 2));
             if (left)
             {
@@ -35,7 +34,6 @@ namespace Assignment05
                 bullet.Vx *= -1;
             }
             Engine.canvas.csAdd(bullet);
-            //Engine.canvas.cAdd(bullet);
         }
 
         public bool isWall()

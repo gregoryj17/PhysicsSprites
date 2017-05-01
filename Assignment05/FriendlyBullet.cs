@@ -12,12 +12,12 @@ using System.Windows.Forms;
 
 namespace Assignment05
 {
-    class Bullet:PhysicsSprite 
+    class FriendlyBullet : PhysicsSprite
     {
         DateTime start;
         TimeSpan lifetime = new TimeSpan(0, 0, 3);
 
-        public Bullet(int x, int y) : base(Properties.Resources.bullet, x, y)
+        public FriendlyBullet(int x, int y) : base(Properties.Resources.bullet, x, y)
         {
             setMotionModel(1);
             Vx = 50f;
@@ -31,12 +31,12 @@ namespace Assignment05
             X -= Vx;
             foreach (CollisionSprite s in list)
             {
-                if (s.GetType() == typeof(Elephant))
+                if (s.GetType() == typeof(Enemy))
                 {
                     s.Kill();
                 }
             }
-            if(list.Count>0) this.Kill();
+            if (list.Count > 0) this.Kill();
         }
 
         public override void act()

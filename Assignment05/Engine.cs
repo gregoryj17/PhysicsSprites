@@ -21,6 +21,7 @@ namespace Assignment05
         public static Enemy jason = new Enemy(250, 200);
         public static Rectangle rect = new Rectangle(0, 0, 1400, 900, 200);
         public static TextSprite text = new TextSprite(0, 0, "You Win!");
+        public static TextSprite loss = new TextSprite(0, 0, "You Lose.");
 
         public Sprite Canvas
         {
@@ -53,6 +54,7 @@ namespace Assignment05
             uthread.Start();
             canvas.add(rect);
             canvas.add(text);
+            canvas.add(loss);
             //parent.add(Program.elephant);
         }
 
@@ -74,14 +76,23 @@ namespace Assignment05
                 rendering = true;
                 if (enemyCount <= 0)
                 {
+                    rect.setColor(Rectangle.initColor);
                     rect.setVisibility(true);
                     text.setVisibility(true);
                     text.changeLocation((form.ClientSize.Width / 2) - 50, (form.ClientSize.Height / 2) - 50);
+                }
+                else if (!elephant.alive)
+                {
+                    rect.setColor(Color.FromArgb(200, Color.Red));
+                    rect.setVisibility(true);
+                    loss.changeLocation((form.ClientSize.Width / 2) - 50, (form.ClientSize.Height / 2) - 50);
+                    loss.setVisibility(true);
                 }
                 else
                 {
                     rect.setVisibility(false);
                     text.setVisibility(false);
+                    loss.setVisibility(false);
                 }
                 form.Invoke(new MethodInvoker(form.Refresh));
                 rendering = false;
@@ -156,9 +167,25 @@ namespace Assignment05
                 elephant.Vx = 5;
                 elephant.Ax = -0.1f;
             }
-            else if (e.KeyCode == Keys.K)
+            /*else if (e.KeyCode == Keys.K)
             {
                 jason.Kill();
+            }*/
+            else if(e.KeyCode == Keys.W)
+            {
+                elephant.shoot(0);
+            }
+            else if(e.KeyCode == Keys.D)
+            {
+                elephant.shoot(1);
+            }
+            else if(e.KeyCode == Keys.S)
+            {
+                elephant.shoot(2);
+            }
+            else if(e.KeyCode == Keys.A)
+            {
+                elephant.shoot(3);
             }
         }
 
