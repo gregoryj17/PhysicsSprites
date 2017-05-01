@@ -39,6 +39,7 @@ namespace Assignment05
         public static double running_fps = 30.0;
         public static bool rendering = false;
         public static bool updating = false;
+        public static bool resetting = false;
         //public static SoundPlayer jukebox = new SoundPlayer(Properties.Resources.music);
         //public static SoundPlayer phwoah = new SoundPlayer(Properties.Resources.phwoah);
 
@@ -63,6 +64,7 @@ namespace Assignment05
         public static void reset()
         {
             canvas.RemoveAll();
+            resetting = true;
             while (rendering || updating) { }
             elephant = new Elephant(100, 100);
             elephant.alive = true;
@@ -87,6 +89,7 @@ namespace Assignment05
             canvas.add(rect);
             canvas.add(text);
             canvas.add(loss);
+            resetting = false;
         }
 
         public static void render()
@@ -104,6 +107,7 @@ namespace Assignment05
                     Thread.Sleep((frameTime - diff).Milliseconds);
                 last = DateTime.Now;
                 //form.Refresh();
+                if (resetting) continue;
                 rendering = true;
                 if (enemyCount <= 0 && !lose)
                 {
@@ -147,6 +151,7 @@ namespace Assignment05
                 if (diff.TotalMilliseconds < frameTime.TotalMilliseconds)
                     Thread.Sleep((frameTime - diff).Milliseconds);
                 last = DateTime.Now;
+                if (resetting) continue;
                 updating = true;
                 canvas.update();
                 updating = false;
