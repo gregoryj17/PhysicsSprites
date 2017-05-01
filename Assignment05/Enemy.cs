@@ -10,6 +10,8 @@ namespace Assignment05
     {
         private Boolean left = false;
         private Random r = new Random();
+        public DateTime lastshot = DateTime.Now;
+        public TimeSpan firerate = new TimeSpan(0, 0, 0, 2, 50);
 
         public Enemy() : base(Properties.Resources.jason)
         {
@@ -78,9 +80,18 @@ namespace Assignment05
             if (r.NextDouble() < .01) Vy = -20;
             if (isWall()) Vx *= -1;
             if (isCeiling()) Vy = 0;
-            if (r.NextDouble() < .01) Shoot();
+            if (r.NextDouble() < .01)
+            {
+                Shoot();
+                lastshot = DateTime.Now;
+            }
             if (Vx < 0) left = true;
             if (Vx > 0) left = false;
+            if (DateTime.Now - lastshot >= firerate)
+            {
+                Shoot();
+                lastshot = DateTime.Now;
+            }
         }
 
         public override void Kill()

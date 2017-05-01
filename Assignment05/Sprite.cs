@@ -144,6 +144,10 @@ namespace Assignment05
             {
                 remove(s);
             }
+            foreach(CollisionSprite s in cchildren)
+            {
+                cRemove(s);
+            }
         }
 
         public void queueClear()

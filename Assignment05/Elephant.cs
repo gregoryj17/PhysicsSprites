@@ -15,6 +15,8 @@ namespace Assignment05
     public class Elephant:PhysicsSprite
     {
         public bool alive;
+        public DateTime lastshot=DateTime.Now;
+        public TimeSpan firerate = new TimeSpan(0, 0, 1);
 
         public Elephant(int x, int y) : base(Properties.Resources.elephant, x, y)
         {
@@ -48,6 +50,7 @@ namespace Assignment05
         public void shoot(int dir)
         {
             if (!alive) return;
+            if (DateTime.Now - lastshot <= firerate) return;
             FriendlyBullet bullet = new FriendlyBullet((int)(X + 2 * width * Scale * 1.1f), (int)(Y + height * Scale / 2));
             bullet.X = X + 2 * width * Scale * 1.1f;
             bullet.Y = Y + height * Scale / 2;
@@ -73,6 +76,7 @@ namespace Assignment05
                 bullet.Vy *= -1;
             }
             Engine.canvas.csAdd(bullet);
+            lastshot = DateTime.Now;
         }
 
     }

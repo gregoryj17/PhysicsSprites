@@ -18,10 +18,12 @@ namespace Assignment05
         public static Elephant elephant = new Elephant(100, 100);
         public static Sprite canvas = new Sprite();
         public static int enemyCount = 0;
-        public static Enemy jason = new Enemy(250, 200);
+        public static Enemy jason = new Enemy(1000, 200);
         public static Rectangle rect = new Rectangle(0, 0, 1400, 900, 200);
-        public static TextSprite text = new TextSprite(0, 0, "You Win!");
-        public static TextSprite loss = new TextSprite(0, 0, "You Lose.");
+        public static bool win=false;
+        public static bool lose=false;
+        public static TextSprite text = new TextSprite(0, 0, "You Win!\nPress r to restart.");
+        public static TextSprite loss = new TextSprite(0, 0, "You Lose.\nPress r to restart.");
 
         public Sprite Canvas
         {
@@ -58,6 +60,35 @@ namespace Assignment05
             //parent.add(Program.elephant);
         }
 
+        public static void reset()
+        {
+            canvas.RemoveAll();
+            while (rendering || updating) { }
+            elephant = new Elephant(100, 100);
+            elephant.alive = true;
+            canvas.csAdd(elephant);
+            for (int i = 0; i < 13; i++)
+            {
+                Box box = new Box(i * 100, 0);
+                canvas.csAdd(box);
+                box = new Box(i * 100, 600);
+                canvas.csAdd(box);
+            }
+            for (int i = 0; i < 7; i++)
+            {
+                Box box = new Box(0, i * 100);
+                canvas.csAdd(box);
+                box = new Box(1200, i * 100);
+                canvas.csAdd(box);
+            }
+            jason = new Enemy(1000, 200);
+            enemyCount = 1;
+            canvas.csAdd(jason);
+            canvas.add(rect);
+            canvas.add(text);
+            canvas.add(loss);
+        }
+
         public static void render()
         {
             DateTime last = DateTime.Now;
@@ -74,25 +105,29 @@ namespace Assignment05
                 last = DateTime.Now;
                 //form.Refresh();
                 rendering = true;
-                if (enemyCount <= 0)
+                if (enemyCount <= 0 && !lose)
                 {
                     rect.setColor(Rectangle.initColor);
                     rect.setVisibility(true);
                     text.setVisibility(true);
                     text.changeLocation((form.ClientSize.Width / 2) - 50, (form.ClientSize.Height / 2) - 50);
+                    win = true;
                 }
-                else if (!elephant.alive)
+                else if (!elephant.alive && !win)
                 {
                     rect.setColor(Color.FromArgb(200, Color.Red));
                     rect.setVisibility(true);
                     loss.changeLocation((form.ClientSize.Width / 2) - 50, (form.ClientSize.Height / 2) - 50);
                     loss.setVisibility(true);
+                    lose = true;
                 }
                 else
                 {
                     rect.setVisibility(false);
                     text.setVisibility(false);
                     loss.setVisibility(false);
+                    win = false;
+                    lose = false;
                 }
                 form.Invoke(new MethodInvoker(form.Refresh));
                 rendering = false;
@@ -139,9 +174,9 @@ namespace Assignment05
             e.Graphics.FillRectangle(Brushes.Black, ClientRectangle);
             parent.render(e.Graphics);
             e.Graphics.DrawString("Collisions: " + elephant.getCollisions().Count, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 0);
-            e.Graphics.DrawString("Count: " + elephant.TrackedSprites.Count, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 20);*/
+            e.Graphics.DrawString("Count: " + elephant.TrackedSprites.Count, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 20);
+            e.Graphics.DrawString("Enemies Remaining: " + enemyCount, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 0);*/
             canvas.render(e.Graphics);
-            e.Graphics.DrawString("Enemies Remaining: " + enemyCount, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 0);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -186,6 +221,10 @@ namespace Assignment05
             else if(e.KeyCode == Keys.A)
             {
                 elephant.shoot(3);
+            }
+            else if(e.KeyCode == Keys.R)
+            {
+                reset();
             }
         }
 
