@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Assignment05
 {
-    class Elephant:PhysicsSprite
+    public class Elephant:PhysicsSprite
     {
         public Elephant(int x, int y) : base(Properties.Resources.elephant, x, y)
         {
@@ -20,5 +20,21 @@ namespace Assignment05
             X = x;
             Y = y;
         }
+
+        public override void act()
+        {
+            base.act();
+            if ((Vx > 0 && Ax > 0) || (Vx < 0 && Ax < 0))
+            {
+                Vx = 0;
+                Ax = 0;
+            }
+            if ((Vy > 0 && Ay > 0) || (Vy < 0 && Ay < 0))
+            {
+                Vy = 0;
+                Ay = 0;
+            }
+        }
+
     }
 }

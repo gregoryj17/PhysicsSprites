@@ -14,9 +14,31 @@ namespace Assignment05
 {
     class Bullet:PhysicsSprite 
     {
-        public Bullet(Image image, int x, int y) : base(image, x, y)
+        public Bullet(int x, int y) : base(Properties.Resources.bullet, x, y)
         {
-            
+            setMotionModel(1);
+            Vx = 50f;
+        }
+
+        public void killCharacter()
+        {
+            X += Vx;
+            List<CollisionSprite> list = getCollisions();
+            X -= Vx;
+            foreach (CollisionSprite s in list)
+            {
+                if (s.GetType() == typeof(Elephant))
+                {
+                    s.Kill();
+                }
+            }
+            if(list.Count>0) this.Kill();
+        }
+
+        public override void act()
+        {
+            base.act();
+            killCharacter();
         }
 
     }

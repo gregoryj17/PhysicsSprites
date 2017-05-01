@@ -15,7 +15,12 @@ namespace Assignment05
 {
     public partial class Engine : Form
     {
+        public static Elephant elephant = new Elephant(100, 100);
         public static Sprite canvas = new Sprite();
+        public static int enemyCount = 0;
+        public static Enemy jason = new Enemy(250, 200);
+        public static Rectangle rect = new Rectangle(0, 0, 1400, 900, 200);
+        public static TextSprite text = new TextSprite(0, 0, "You Win!");
 
         public Sprite Canvas
         {
@@ -27,8 +32,10 @@ namespace Assignment05
         public static Engine form;
         public Thread rthread;
         public Thread uthread;
-        public static int fps = 60;
-        public static double running_fps = 60.0;
+        public static int fps = 30;
+        public static double running_fps = 30.0;
+        public static bool rendering = false;
+        public static bool updating = false;
         //public static SoundPlayer jukebox = new SoundPlayer(Properties.Resources.music);
         //public static SoundPlayer phwoah = new SoundPlayer(Properties.Resources.phwoah);
 
@@ -38,10 +45,14 @@ namespace Assignment05
             InitializeComponent();
             //canvas = new Sprite();
             form = this;
+            Size = new Size(1300, 800);
+            StartPosition = FormStartPosition.CenterScreen;
             rthread = new Thread(new ThreadStart(render));
             uthread = new Thread(new ThreadStart(update));
             rthread.Start();
             uthread.Start();
+            canvas.add(rect);
+            canvas.add(text);
             //parent.add(Program.elephant);
         }
 
@@ -60,7 +71,20 @@ namespace Assignment05
                     Thread.Sleep((frameTime - diff).Milliseconds);
                 last = DateTime.Now;
                 //form.Refresh();
+                rendering = true;
+                if (enemyCount <= 0)
+                {
+                    rect.setVisibility(true);
+                    text.setVisibility(true);
+                    text.changeLocation((form.ClientSize.Width / 2) - 50, (form.ClientSize.Height / 2) - 50);
+                }
+                else
+                {
+                    rect.setVisibility(false);
+                    text.setVisibility(false);
+                }
                 form.Invoke(new MethodInvoker(form.Refresh));
+                rendering = false;
             }
         }
 
@@ -77,8 +101,14 @@ namespace Assignment05
                 if (diff.TotalMilliseconds < frameTime.TotalMilliseconds)
                     Thread.Sleep((frameTime - diff).Milliseconds);
                 last = DateTime.Now;
+                updating = true;
                 canvas.update();
-                canvas.queueClear();
+                updating = false;
+                if (!updating && !rendering)
+                {
+                    canvas.queueClear();
+                    canvas.updateAllTracking();
+                }
             }
         }
 
@@ -94,10 +124,42 @@ namespace Assignment05
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //base.OnPaint(e);
-            //e.Graphics.FillRectangle(Brushes.Black, ClientRectangle);
+            /*base.OnPaint(e);
+            e.Graphics.FillRectangle(Brushes.Black, ClientRectangle);
+            parent.render(e.Graphics);
+            e.Graphics.DrawString("Collisions: " + elephant.getCollisions().Count, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 0);
+            e.Graphics.DrawString("Count: " + elephant.TrackedSprites.Count, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 20);*/
             canvas.render(e.Graphics);
-            //parent.render(e.Graphics);
+            e.Graphics.DrawString("Enemies Remaining: " + enemyCount, new Font("Comic Sans MS", 10), Brushes.LawnGreen, 0, 0);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.KeyCode == Keys.Down)
+            {
+                elephant.Vy = 5;
+                elephant.Ay = -0.1f;
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                elephant.Vy = -5;
+                elephant.Ay = 0.1f;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                elephant.Vx = -5;
+                elephant.Ax = 0.1f;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                elephant.Vx = 5;
+                elephant.Ax = -0.1f;
+            }
+            else if (e.KeyCode == Keys.K)
+            {
+                jason.Kill();
+            }
         }
 
         protected override void OnClosed(EventArgs e)

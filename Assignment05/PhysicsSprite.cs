@@ -14,11 +14,11 @@ namespace Assignment05
 {
     public class PhysicsSprite : CollisionSprite
     {
-        protected float gX, gY, aX, aY, vX, vY;
+        protected float gX, gY=.1f, aX, aY, vX, vY;
 
         enum MotionModels {Static, SetPath, Kinematic};
 
-        MotionModels MotionModel=MotionModels.Static;
+        MotionModels MotionModel=MotionModels.Kinematic;
 
         public float Gx
         {
@@ -67,14 +67,32 @@ namespace Assignment05
             Y = y;
         }
 
+        public void setMotionModel(int type)
+        {
+            if (type == 0) MotionModel = MotionModels.Static;
+            if (type == 1) MotionModel = MotionModels.SetPath;
+            if (type == 2) MotionModel = MotionModels.Kinematic;
+        }
+
         public override void act()
         {
             if (MotionModel != MotionModels.Static)
             {
                 X += Vx;
-                Y += Vy;
+                if (getCollisions().Count > 0)
+                {
+                    X -= Vx;
+                }
             }
-            if(MotionModel == MotionModels.Kinematic)
+            if (MotionModel != MotionModels.Static)
+            {
+                Y += Vy;
+                if(getCollisions().Count > 0)
+                {
+                    Y -= Vy;
+                }
+            }
+            if (MotionModel == MotionModels.Kinematic)
             {
                 Vx += Ax + Gx;
                 Vy += Ay + Gy;

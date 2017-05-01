@@ -12,43 +12,18 @@ using System.Windows.Forms;
 
 namespace Assignment05
 {
-    public class Box : Sprite
+    public class Box : PhysicsSprite
     {
-        public int height;
-        public int width;
-        public Boolean visible;
-        public int opacity;
-
-        public Box(int x, int y, int width, int height, int opacity)
+        
+        public Box(int x, int y):base(Properties.Resources.box,x,y)
         {
-            X = x;
-            Y = y;
-            this.height = height;
-            this.width = width;
-            this.opacity = opacity;
-            visible = false;
-        }
-
-        public void setDimensions(int width, int height)
-        {
-            this.width = width;
-            this.height = height;
-        }
-
-        public void setOpacity(int opacity)
-        {
-            this.opacity = opacity;
-        }
-
-        public void setVisibility(Boolean visible)
-        {
-            this.visible = visible;
+            setMotionModel(0);
         }
 
         public override void paint(Graphics g)
         {
             base.paint(g);
-            if (visible) g.FillRectangle(new SolidBrush(Color.FromArgb(opacity, Color.LawnGreen)), X, Y, width, height);
+            //g.FillRectangle(new SolidBrush(Color.LawnGreen), 0, 0, width, height);
         }
     }
 }

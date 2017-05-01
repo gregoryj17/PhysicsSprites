@@ -13,6 +13,10 @@ namespace Assignment05
         protected List<CollisionSprite> toTrack = new List<CollisionSprite>();
         protected List<CollisionSprite> toUntrack = new List<CollisionSprite>();
 
+        public List<CollisionSprite> TrackedSprites{
+            get { return sprites; }
+        }
+
         public CollisionSprite(Image image) : base(image)
         {
             toTrack.Add(this);
@@ -42,6 +46,12 @@ namespace Assignment05
             toTrack = new List<CollisionSprite>();
         }
 
+        public override void Kill()
+        {
+            base.Kill();
+            Parent.cRemove(this);
+        }
+
         public List<CollisionSprite> getCollisions()
         {
             List<CollisionSprite> collisions = new List<CollisionSprite>();
@@ -49,6 +59,7 @@ namespace Assignment05
             float c1y = Y + (height / 2);
             foreach(CollisionSprite s in sprites)
             {
+                if (s == this) continue;
                 float c2x = s.X + (s.width / 2);
                 float c2y = s.Y + (s.height / 2);
                 if (Math.Abs(c1x - c2x) < ((width / 2) + (s.width / 2)) && Math.Abs(c1y - c2y) < ((height / 2) + (s.height / 2)))
@@ -56,6 +67,7 @@ namespace Assignment05
                     collisions.Add(s);
                 }
             }
+            //Console.Out.WriteLine(collisions.Count);
             return collisions;
         }
 

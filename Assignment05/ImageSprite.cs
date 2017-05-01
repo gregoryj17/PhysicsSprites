@@ -35,7 +35,7 @@ namespace Assignment05
 
         public override void paint(Graphics g)
         {
-            g.DrawImage(image, X, Y);
+            g.DrawImage(image, 0, 0);
         }
 
     }

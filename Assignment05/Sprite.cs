@@ -16,6 +16,12 @@ namespace Assignment05
     {
         private Sprite parent = null;
 
+        public Sprite Parent
+        {
+            get { return parent; }
+            set { parent = value; }
+        }
+
         //instance variable
         private float x = 0;
 
@@ -56,11 +62,13 @@ namespace Assignment05
         public List<Sprite> children = new List<Sprite>();
         public List<Sprite> toAdd = new List<Sprite>();
         public List<Sprite> toRemove = new List<Sprite>();
+        public List<CollisionSprite> cchildren = new List<CollisionSprite>();
+        public List<CollisionSprite> ctoAdd = new List<CollisionSprite>();
+        public List<CollisionSprite> ctoRemove = new List<CollisionSprite>();
 
-
-        public void Kill()
+        public virtual void Kill()
         {
-            parent.children.Remove(this);
+            parent.remove(this);
         }
 
         //methods
@@ -103,9 +111,31 @@ namespace Assignment05
             toAdd.Add(s);
         }
 
+        public void cAdd(CollisionSprite s)
+        {
+            ctoAdd.Add(s);
+        }
+
+        public void csAdd(CollisionSprite s)
+        {
+            add(s);
+            cAdd(s);
+        }
+
         public void remove(Sprite s)
         {
             toRemove.Add(s);
+        }
+
+        public void cRemove(CollisionSprite s)
+        {
+            ctoRemove.Add(s);
+        }
+
+        public void csRemove(CollisionSprite s)
+        {
+            remove(s);
+            cRemove(s);
         }
 
         public void RemoveAll()
@@ -128,6 +158,34 @@ namespace Assignment05
                 children.Add(s);
             }
             toAdd = new List<Sprite>();
+            foreach(CollisionSprite s in ctoRemove)
+            {
+                cchildren.Remove(s);
+                foreach(CollisionSprite c in cchildren)
+                {
+                    c.untrack(s);
+                    s.untrack(c);
+                }
+            }
+            ctoRemove = new List<CollisionSprite>();
+            foreach(CollisionSprite s in ctoAdd)
+            {
+                cchildren.Add(s);
+                foreach(CollisionSprite c in cchildren)
+                {
+                    c.track(s);
+                    s.track(c);
+                }
+            }
+            ctoAdd = new List<CollisionSprite>();
+        }
+
+        public void updateAllTracking()
+        {
+            foreach(CollisionSprite c in cchildren)
+            {
+                c.updateTracking();
+            }
         }
 
     }

@@ -14,23 +14,28 @@ namespace Assignment05
         public Enemy() : base(Properties.Resources.jason)
         {
             Vx = 4f;
+            Gy = 0.25f;
+            Engine.enemyCount++;
         }
 
         public Enemy(int x, int y) : base(Properties.Resources.jason, x, y)
         {
             Vx = 4f;
+            Gy = 0.25f;
+            Engine.enemyCount++;
         }
 
         public void Shoot()
         {
 
-            Bullet bullet = new Bullet(Properties.Resources.box, (int)(X + width * Scale * 1.1f), (int)(Y + height * Scale / 2));
+            Bullet bullet = new Bullet((int)(X + 2 * width * Scale * 1.1f), (int)(Y + height * Scale / 2));
             if (left)
             {
-                bullet.X = X - 26;
+                bullet.X = X - width * Scale * 1.1f;
                 bullet.Vx *= -1;
             }
-            Engine.canvas.add(bullet);
+            Engine.canvas.csAdd(bullet);
+            //Engine.canvas.cAdd(bullet);
         }
 
         public bool isWall()
@@ -42,6 +47,18 @@ namespace Assignment05
                 return true;
             }
             X -= Vx;
+            return false;
+        }
+
+        public bool isCeiling()
+        {
+            Y += Vy;
+            if(getCollisions().Count > 0)
+            {
+                Y -= Vy;
+                return true;
+            }
+            Y -= Vy;
             return false;
         }
 
@@ -62,9 +79,16 @@ namespace Assignment05
             killCharacter();
             if (r.NextDouble() < .01) Vy = -20;
             if (isWall()) Vx *= -1;
+            if (isCeiling()) Vy = 0;
             if (r.NextDouble() < .01) Shoot();
             if (Vx < 0) left = true;
             if (Vx > 0) left = false;
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
+            Engine.enemyCount--;
         }
 
     }

@@ -8,7 +8,6 @@ namespace Assignment05
 {
     class Program : Engine
     {
-
         public Program() : base()
         {
 
@@ -20,7 +19,28 @@ namespace Assignment05
         [STAThread]
         static void Main()
         {
-            Program.canvas.add(new Elephant(0, 0));
+            Program.canvas.csAdd(elephant);
+            /*List<int> xs = new List<int> { 000, 100, 200, 300, 400, 500, 000, 100, 200, 300, 400, 500, 000, 000, 000, 000, 500, 500, 500, 500 };
+            List<int> ys = new List<int> { 500, 500, 500, 500, 500, 500, 000, 000, 000, 000, 000, 000, 100, 200, 300, 400, 100, 200, 300, 400 };
+            for(int i = 0; i < xs.Count; i++) {
+                Box box = new Box(xs[i], ys[i]);
+                Program.canvas.csAdd(box);
+            }*/
+            for(int i = 0; i < 13; i++)
+            {
+                Box box = new Box(i * 100, 0);
+                canvas.csAdd(box);
+                box = new Box(i * 100, 600);
+                canvas.csAdd(box);
+            }
+            for(int i = 0; i < 7; i++)
+            {
+                Box box = new Box(0, i * 100);
+                canvas.csAdd(box);
+                box = new Box(1200, i * 100);
+                canvas.csAdd(box);
+            }
+            Program.canvas.csAdd(jason);
             Application.Run(new Program());
             /*Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
