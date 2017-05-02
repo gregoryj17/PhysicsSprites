@@ -65,7 +65,7 @@ namespace Assignment05
         {
             canvas.RemoveAll();
             resetting = true;
-            while (rendering || updating) { }
+            //while (rendering || updating);
             elephant = new Elephant(100, 100);
             elephant.alive = true;
             canvas.csAdd(elephant);
