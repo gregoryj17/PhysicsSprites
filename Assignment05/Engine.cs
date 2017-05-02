@@ -108,7 +108,6 @@ namespace Assignment05
                 last = DateTime.Now;
                 //form.Refresh();
                 if (resetting) continue;
-                rendering = true;
                 if (enemyCount <= 0 && !lose)
                 {
                     rect.setColor(Rectangle.initColor);
@@ -133,6 +132,7 @@ namespace Assignment05
                     win = false;
                     lose = false;
                 }
+                rendering = true;
                 form.Invoke(new MethodInvoker(form.Refresh));
                 rendering = false;
             }
