@@ -24,6 +24,7 @@ namespace Assignment05
         public static bool lose=false;
         public static TextSprite text = new TextSprite(0, 0, "You Win!\nPress r to restart.");
         public static TextSprite loss = new TextSprite(0, 0, "You Lose.\nPress r to restart.");
+        public static int lastUpdate = 0;
 
         public Sprite Canvas
         {
@@ -132,6 +133,7 @@ namespace Assignment05
                     win = false;
                     lose = false;
                 }
+                if (lastUpdate >= 15) continue;
                 rendering = true;
                 form.Invoke(new MethodInvoker(form.Refresh));
                 rendering = false;
@@ -152,13 +154,15 @@ namespace Assignment05
                     Thread.Sleep((frameTime - diff).Milliseconds);
                 last = DateTime.Now;
                 if (resetting) continue;
-                updating = true;
                 canvas.update();
-                updating = false;
-                if (!updating && !rendering)
+                lastUpdate++;
+                if (!rendering)
                 {
+                    updating = true;
+                    lastUpdate = 0;
                     canvas.queueClear();
                     canvas.updateAllTracking();
+                    updating = false;
                 }
             }
         }
